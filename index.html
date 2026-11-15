@@ -1,0 +1,326 @@
+﻿<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#eff9ff">
+  <meta name="description" content="諛깆????꾨뱶 ??紐⑤컮??companion">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icon-192.png">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  <title>?꾨뱶 ??/title>
+  <style>
+    @font-face {
+      font-family: Gaegu;
+      src: url("Gaegu-Regular.ttf") format("truetype");
+      font-display: swap;
+    }
+    :root {
+      color-scheme: light;
+      --sky: #eff9ff;
+      --sky-strong: #dff2ff;
+      --sky-border: #b9e2f7;
+      --ink: #000;
+      --white: #fff;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100svh;
+      color: var(--ink);
+      background: linear-gradient(180deg, #eaf7ff 0%, var(--sky) 45%, #fff 100%);
+      font-family: Gaegu, "Malgun Gothic", sans-serif;
+      font-size: 20px;
+    }
+    button, input { font: inherit; color: var(--ink); }
+    .app {
+      width: min(100%, 560px);
+      min-height: 100svh;
+      margin: 0 auto;
+      padding: max(18px, env(safe-area-inset-top)) 18px max(20px, env(safe-area-inset-bottom));
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    header { display: flex; justify-content: space-between; align-items: center; }
+    h1 { margin: 0; font-size: 32px; line-height: 1; }
+    .install {
+      border: 1px solid var(--sky-border);
+      border-radius: 999px;
+      background: var(--white);
+      padding: 8px 14px;
+      display: inline-block;
+    }
+    .pet-card {
+      flex: 1;
+      min-height: 380px;
+      position: relative;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      border: 1px solid var(--sky-border);
+      border-radius: 28px;
+      background: rgb(255 255 255 / 84%);
+      box-shadow: 0 12px 30px rgb(95 163 204 / 10%);
+    }
+    .speech {
+      position: absolute;
+      top: 24px;
+      left: 50%;
+      z-index: 2;
+      width: max-content;
+      max-width: calc(100% - 36px);
+      padding: 8px 18px;
+      border: 2px solid var(--sky-border);
+      border-radius: 22px;
+      background: var(--white);
+      text-align: center;
+      line-height: 1.2;
+      transform: translateX(-50%);
+      display: none;
+    }
+    .speech::after {
+      content: "";
+      position: absolute;
+      left: calc(50% - 8px);
+      bottom: -9px;
+      width: 14px;
+      height: 14px;
+      background: var(--white);
+      border-right: 2px solid var(--sky-border);
+      border-bottom: 2px solid var(--sky-border);
+      transform: rotate(45deg);
+    }
+    .pet-wrap { width: 100%; display: grid; place-items: center; transition: transform .35s ease; }
+    .pet {
+      display: block;
+      width: min(72vw, 320px);
+      max-height: 48svh;
+      object-fit: contain;
+      image-rendering: pixelated;
+      touch-action: manipulation;
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+    .ground {
+      position: absolute;
+      bottom: 24px;
+      width: 145px;
+      height: 15px;
+      border-radius: 50%;
+      background: #d7effb;
+      filter: blur(3px);
+    }
+    .hint { margin: -5px 0 0; text-align: center; font-size: 18px; }
+    .controls { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+    .controls button, .sheet button {
+      min-height: 52px;
+      border: 1px solid var(--sky-border);
+      border-radius: 16px;
+      background: var(--white);
+      box-shadow: 0 3px 0 #d7effb;
+      padding: 9px 12px;
+    }
+    button:active { transform: translateY(1px); }
+    .primary { background: var(--sky-strong) !important; }
+    .overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 10;
+      display: none;
+      align-items: end;
+      justify-content: center;
+      padding: 14px;
+      background: rgb(0 0 0 / 28%);
+    }
+    .overlay.open { display: flex; }
+    .sheet {
+      width: min(100%, 520px);
+      max-height: min(82svh, 720px);
+      overflow: auto;
+      padding: 20px;
+      border: 1px solid var(--sky-border);
+      border-radius: 24px;
+      background: var(--sky);
+    }
+    .sheet h2 { margin: 0 0 4px; font-size: 28px; }
+    .sheet p { margin: 0 0 12px; }
+    .site-list { display: grid; gap: 8px; margin: 12px 0; }
+    .site-row { display: flex; gap: 8px; }
+    .site-row a {
+      flex: 1;
+      padding: 9px 12px;
+      border: 1px solid var(--sky-border);
+      border-radius: 12px;
+      background: var(--white);
+      color: var(--ink);
+      text-decoration: none;
+    }
+    .site-row button { min-height: 44px; padding: 6px 12px; }
+    .sheet-actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+    .sheet-actions button { flex: 1; }
+    .empty { padding: 16px; border-radius: 12px; background: var(--white); text-align: center; }
+    footer { text-align: center; font-size: 16px; opacity: .8; }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <header>
+      <h1>?꾨뱶 ??/h1>
+      <button class="install" id="installButton">???ㅼ튂</button>
+    </header>
+    <section class="pet-card" aria-label="?꾨뱶 ??罹먮┃??>
+      <div class="speech" id="speech"></div>
+      <div class="ground"></div>
+      <div class="pet-wrap" id="petWrap"><img class="pet" id="pet" src="idle.png" alt="?꾨뱶 ??></div>
+    </section>
+    <p class="hint">罹먮┃?곕? ??踰??꾨Ⅴ硫??몄궗?섍퀬, ??踰??꾨Ⅴ硫??뱀궗?댄듃 紐⑸줉???댁뼱??</p>
+    <section class="controls">
+      <button class="primary" id="walkButton">嫄룰린 硫덉텛湲?/button>
+      <button id="sitesButton">??ν븳 ?뱀궗?댄듃</button>
+      <button id="scheduleButton">怨듭뿰 ?쇱젙</button>
+      <button id="spotifyButton">Spotify ?닿린</button>
+      <button id="searchButton">Spotify 怨?寃??/button>
+    </section>
+    <footer>?대????붾㈃ ?덉뿉???④퍡?섎뒗 ?묒? ??/footer>
+  </main>
+
+  <div class="overlay" id="sitesOverlay" role="dialog" aria-modal="true" aria-labelledby="sitesTitle">
+    <section class="sheet">
+      <h2 id="sitesTitle">???뱀궗?댄듃 紐⑥쓬</h2>
+      <p>?대쫫???꾨Ⅴ硫??ъ씠?멸? ?대젮??</p>
+      <div class="site-list" id="siteList"></div>
+      <div class="sheet-actions">
+        <button class="primary" id="addSiteButton">?뱀궗?댄듃 異붽?</button>
+        <button id="closeSitesButton">?リ린</button>
+      </div>
+    </section>
+  </div>
+  <div class="overlay" id="scheduleOverlay" role="dialog" aria-modal="true">
+    <section class="sheet">
+      <h2>諛깆???怨듭뿰 ?쇱젙</h2>
+      <p>怨듭떇 ?꾨줈誘몄뒪?섏씤 怨듭뿰 ?쇱젙???뺤씤?????덉뼱??</p>
+      <div class="sheet-actions">
+        <button class="primary" id="officialScheduleButton">怨듭떇 ?쇱젙 ?섏씠吏 ?닿린</button>
+        <button id="closeScheduleButton">?リ린</button>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    const pet = document.getElementById('pet');
+    const petWrap = document.getElementById('petWrap');
+    const speech = document.getElementById('speech');
+    const sitesOverlay = document.getElementById('sitesOverlay');
+    const scheduleOverlay = document.getElementById('scheduleOverlay');
+    const frames = {
+      idle: 'idle.png', walk1: 'walk_1.png', walk2: 'walk_2.png',
+      click: 'click.png', double: 'double_click.png', pause: 'pause.png',
+      pauseClick: 'pause_click.png', pauseDouble: 'pause_double_click.png'
+    };
+    const messages = ['?ㅻ뒛??媛숈씠 ?덉뼱??', '泥쒖쿇???ъ뼱媛??', '諛섍??뚯슂!'];
+    let walking = true;
+    let walkFrame = false;
+    let clickTimer;
+    let speechTimer;
+    let moveX = 0;
+    let direction = 1;
+    let lastTap = 0;
+    let deferredInstall;
+    let sites = JSON.parse(localStorage.getItem('hood-pet-sites') || '[]');
+
+    function showSpeech(text) {
+      speech.textContent = text;
+      speech.style.display = 'block';
+      clearTimeout(speechTimer);
+      speechTimer = setTimeout(() => speech.style.display = 'none', 2600);
+    }
+    function setFrame(file) { pet.src = file; }
+    function react(kind) {
+      setFrame(walking ? frames[kind] : (kind === 'click' ? frames.pauseClick : frames.pauseDouble));
+      showSpeech(kind === 'double' ? '吏쒖옍! ?뱀궗?댄듃瑜?怨⑤씪遊먯슂' : messages[Math.floor(Math.random() * messages.length)]);
+      setTimeout(() => setFrame(walking ? frames.idle : frames.pause), 1200);
+    }
+    function openSites() { refreshSites(); sitesOverlay.classList.add('open'); }
+    function refreshSites() {
+      const list = document.getElementById('siteList');
+      list.replaceChildren();
+      if (!sites.length) {
+        const empty = document.createElement('div');
+        empty.className = 'empty'; empty.textContent = '?꾩쭅 ??ν븳 ?ъ씠?멸? ?놁뼱?? 異붽???蹂댁꽭??';
+        list.append(empty); return;
+      }
+      sites.forEach((site, index) => {
+        const row = document.createElement('div'); row.className = 'site-row';
+        const link = document.createElement('a'); link.href = site.url; link.target = '_blank';
+        link.rel = 'noopener noreferrer'; link.textContent = site.name;
+        const remove = document.createElement('button'); remove.textContent = '??젣';
+        remove.setAttribute('aria-label', `${site.name} ??젣`);
+        remove.onclick = () => { sites.splice(index, 1); saveSites(); refreshSites(); };
+        row.append(link, remove); list.append(row);
+      });
+    }
+    function saveSites() { localStorage.setItem('hood-pet-sites', JSON.stringify(sites)); }
+    pet.addEventListener('click', () => {
+      const now = Date.now();
+      if (now - lastTap < 330) {
+        clearTimeout(clickTimer); lastTap = 0; react('double'); openSites(); return;
+      }
+      lastTap = now;
+      clearTimeout(clickTimer);
+      clickTimer = setTimeout(() => { lastTap = 0; react('click'); }, 330);
+    });
+    document.getElementById('walkButton').onclick = (event) => {
+      walking = !walking;
+      event.currentTarget.textContent = walking ? '嫄룰린 硫덉텛湲? : '?ㅼ떆 嫄룰린';
+      setFrame(walking ? frames.idle : frames.pause);
+    };
+    document.getElementById('sitesButton').onclick = openSites;
+    document.getElementById('addSiteButton').onclick = () => {
+      const name = prompt('?ъ씠???대쫫???낅젰??二쇱꽭??');
+      if (!name || !name.trim()) return;
+      let url = prompt('??二쇱냼瑜??낅젰??二쇱꽭??(https://...):');
+      if (!url) return;
+      url = url.trim();
+      if (!/^https?:\/\//i.test(url)) url = 'https://' + url;
+      try { new URL(url); } catch { alert('??二쇱냼瑜??ㅼ떆 ?뺤씤??二쇱꽭??'); return; }
+      sites.push({name: name.trim(), url}); saveSites(); refreshSites();
+    };
+    document.getElementById('closeSitesButton').onclick = () => sitesOverlay.classList.remove('open');
+    document.getElementById('scheduleButton').onclick = () => scheduleOverlay.classList.add('open');
+    document.getElementById('closeScheduleButton').onclick = () => scheduleOverlay.classList.remove('open');
+    document.getElementById('officialScheduleButton').onclick = () =>
+      window.open('https://fromis9.fanpla.jp/live_information/schedule/list/?lang=ko', '_blank', 'noopener');
+    document.getElementById('spotifyButton').onclick = () => { window.location.href = 'spotify://'; };
+    document.getElementById('searchButton').onclick = () => {
+      const term = prompt('Spotify?먯꽌 李얠쓣 怨≪씠???꾪떚?ㅽ듃:');
+      if (term && term.trim()) window.location.href = 'spotify:search:' + encodeURIComponent(term.trim());
+    };
+    window.addEventListener('beforeinstallprompt', event => {
+      event.preventDefault(); deferredInstall = event;
+      document.getElementById('installButton').style.display = 'block';
+    });
+    document.getElementById('installButton').onclick = async () => {
+      if (deferredInstall) { deferredInstall.prompt(); deferredInstall = null; }
+      else alert('Safari/Chrome 硫붾돱?먯꽌 ?쒗솃 ?붾㈃??異붽??앸? ?좏깮??二쇱꽭??');
+    };
+    let lastWalk = 0;
+    function animate(now) {
+      if (walking && now - lastWalk > 500) {
+        walkFrame = !walkFrame; setFrame(walkFrame ? frames.walk1 : frames.walk2);
+        moveX += direction * 2;
+        if (moveX > 32 || moveX < -32) direction *= -1;
+        petWrap.style.transform = `translateX(${moveX}px)`;
+        lastWalk = now;
+      }
+      requestAnimationFrame(animate);
+    }
+    refreshSites();
+    if ('serviceWorker' in navigator && location.protocol.startsWith('http'))
+      navigator.serviceWorker.register('service-worker.js').catch(() => {});
+    requestAnimationFrame(animate);
+  </script>
+</body>
+</html>
