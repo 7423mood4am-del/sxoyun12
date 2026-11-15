@@ -1,7 +1,7 @@
 {
-  "name": "후드 펫",
-  "short_name": "후드 펫",
-  "description": "귀여운 후드 펫 모바일 companion",
+  "name": "백지헌",
+  "short_name": "백지헌",
+  "description": "백지헌 모바일 펫",
   "lang": "ko-KR",
   "start_url": "./",
   "scope": "./",
