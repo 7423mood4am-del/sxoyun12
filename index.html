@@ -1,16 +1,16 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="ko">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#eff9ff">
-  <meta name="description" content="諛깆????꾨뱶 ??紐⑤컮??companion">
+  <meta name="description" content="백지헌 후드 펫 모바일 companion">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="icon-192.png">
   <link rel="apple-touch-icon" href="icon-192.png">
-  <title>?꾨뱶 ??/title>
+  <title>후드 펫</title>
   <style>
     @font-face {
       font-family: Gaegu;
@@ -168,43 +168,43 @@
 <body>
   <main class="app">
     <header>
-      <h1>?꾨뱶 ??/h1>
-      <button class="install" id="installButton">???ㅼ튂</button>
+      <h1>후드 펫</h1>
+      <button class="install" id="installButton">앱 설치</button>
     </header>
-    <section class="pet-card" aria-label="?꾨뱶 ??罹먮┃??>
+    <section class="pet-card" aria-label="후드 펫 캐릭터">
       <div class="speech" id="speech"></div>
       <div class="ground"></div>
-      <div class="pet-wrap" id="petWrap"><img class="pet" id="pet" src="idle.png" alt="?꾨뱶 ??></div>
+      <div class="pet-wrap" id="petWrap"><img class="pet" id="pet" src="idle.png" alt="후드 펫"></div>
     </section>
-    <p class="hint">罹먮┃?곕? ??踰??꾨Ⅴ硫??몄궗?섍퀬, ??踰??꾨Ⅴ硫??뱀궗?댄듃 紐⑸줉???댁뼱??</p>
+    <p class="hint">캐릭터를 한 번 누르면 인사하고, 두 번 누르면 웹사이트 목록을 열어요.</p>
     <section class="controls">
-      <button class="primary" id="walkButton">嫄룰린 硫덉텛湲?/button>
-      <button id="sitesButton">??ν븳 ?뱀궗?댄듃</button>
-      <button id="scheduleButton">怨듭뿰 ?쇱젙</button>
-      <button id="spotifyButton">Spotify ?닿린</button>
-      <button id="searchButton">Spotify 怨?寃??/button>
+      <button class="primary" id="walkButton">걷기 멈추기</button>
+      <button id="sitesButton">저장한 웹사이트</button>
+      <button id="scheduleButton">공연 일정</button>
+      <button id="spotifyButton">Spotify 열기</button>
+      <button id="searchButton">Spotify 곡 검색</button>
     </section>
-    <footer>?대????붾㈃ ?덉뿉???④퍡?섎뒗 ?묒? ??/footer>
+    <footer>휴대폰 화면 안에서 함께하는 작은 펫</footer>
   </main>
 
   <div class="overlay" id="sitesOverlay" role="dialog" aria-modal="true" aria-labelledby="sitesTitle">
     <section class="sheet">
-      <h2 id="sitesTitle">???뱀궗?댄듃 紐⑥쓬</h2>
-      <p>?대쫫???꾨Ⅴ硫??ъ씠?멸? ?대젮??</p>
+      <h2 id="sitesTitle">내 웹사이트 모음</h2>
+      <p>이름을 누르면 사이트가 열려요.</p>
       <div class="site-list" id="siteList"></div>
       <div class="sheet-actions">
-        <button class="primary" id="addSiteButton">?뱀궗?댄듃 異붽?</button>
-        <button id="closeSitesButton">?リ린</button>
+        <button class="primary" id="addSiteButton">웹사이트 추가</button>
+        <button id="closeSitesButton">닫기</button>
       </div>
     </section>
   </div>
   <div class="overlay" id="scheduleOverlay" role="dialog" aria-modal="true">
     <section class="sheet">
-      <h2>諛깆???怨듭뿰 ?쇱젙</h2>
-      <p>怨듭떇 ?꾨줈誘몄뒪?섏씤 怨듭뿰 ?쇱젙???뺤씤?????덉뼱??</p>
+      <h2>백지헌 공연 일정</h2>
+      <p>공식 프로미스나인 공연 일정을 확인할 수 있어요.</p>
       <div class="sheet-actions">
-        <button class="primary" id="officialScheduleButton">怨듭떇 ?쇱젙 ?섏씠吏 ?닿린</button>
-        <button id="closeScheduleButton">?リ린</button>
+        <button class="primary" id="officialScheduleButton">공식 일정 페이지 열기</button>
+        <button id="closeScheduleButton">닫기</button>
       </div>
     </section>
   </div>
@@ -220,7 +220,7 @@
       click: 'click.png', double: 'double_click.png', pause: 'pause.png',
       pauseClick: 'pause_click.png', pauseDouble: 'pause_double_click.png'
     };
-    const messages = ['?ㅻ뒛??媛숈씠 ?덉뼱??', '泥쒖쿇???ъ뼱媛??', '諛섍??뚯슂!'];
+    const messages = ['오늘도 같이 있어요!', '천천히 쉬어가요~', '반가워요!'];
     let walking = true;
     let walkFrame = false;
     let clickTimer;
@@ -240,7 +240,7 @@
     function setFrame(file) { pet.src = file; }
     function react(kind) {
       setFrame(walking ? frames[kind] : (kind === 'click' ? frames.pauseClick : frames.pauseDouble));
-      showSpeech(kind === 'double' ? '吏쒖옍! ?뱀궗?댄듃瑜?怨⑤씪遊먯슂' : messages[Math.floor(Math.random() * messages.length)]);
+      showSpeech(kind === 'double' ? '짜잔! 웹사이트를 골라봐요' : messages[Math.floor(Math.random() * messages.length)]);
       setTimeout(() => setFrame(walking ? frames.idle : frames.pause), 1200);
     }
     function openSites() { refreshSites(); sitesOverlay.classList.add('open'); }
@@ -249,15 +249,15 @@
       list.replaceChildren();
       if (!sites.length) {
         const empty = document.createElement('div');
-        empty.className = 'empty'; empty.textContent = '?꾩쭅 ??ν븳 ?ъ씠?멸? ?놁뼱?? 異붽???蹂댁꽭??';
+        empty.className = 'empty'; empty.textContent = '아직 저장한 사이트가 없어요. 추가해 보세요!';
         list.append(empty); return;
       }
       sites.forEach((site, index) => {
         const row = document.createElement('div'); row.className = 'site-row';
         const link = document.createElement('a'); link.href = site.url; link.target = '_blank';
         link.rel = 'noopener noreferrer'; link.textContent = site.name;
-        const remove = document.createElement('button'); remove.textContent = '??젣';
-        remove.setAttribute('aria-label', `${site.name} ??젣`);
+        const remove = document.createElement('button'); remove.textContent = '삭제';
+        remove.setAttribute('aria-label', `${site.name} 삭제`);
         remove.onclick = () => { sites.splice(index, 1); saveSites(); refreshSites(); };
         row.append(link, remove); list.append(row);
       });
@@ -274,18 +274,18 @@
     });
     document.getElementById('walkButton').onclick = (event) => {
       walking = !walking;
-      event.currentTarget.textContent = walking ? '嫄룰린 硫덉텛湲? : '?ㅼ떆 嫄룰린';
+      event.currentTarget.textContent = walking ? '걷기 멈추기' : '다시 걷기';
       setFrame(walking ? frames.idle : frames.pause);
     };
     document.getElementById('sitesButton').onclick = openSites;
     document.getElementById('addSiteButton').onclick = () => {
-      const name = prompt('?ъ씠???대쫫???낅젰??二쇱꽭??');
+      const name = prompt('사이트 이름을 입력해 주세요:');
       if (!name || !name.trim()) return;
-      let url = prompt('??二쇱냼瑜??낅젰??二쇱꽭??(https://...):');
+      let url = prompt('웹 주소를 입력해 주세요 (https://...):');
       if (!url) return;
       url = url.trim();
       if (!/^https?:\/\//i.test(url)) url = 'https://' + url;
-      try { new URL(url); } catch { alert('??二쇱냼瑜??ㅼ떆 ?뺤씤??二쇱꽭??'); return; }
+      try { new URL(url); } catch { alert('웹 주소를 다시 확인해 주세요.'); return; }
       sites.push({name: name.trim(), url}); saveSites(); refreshSites();
     };
     document.getElementById('closeSitesButton').onclick = () => sitesOverlay.classList.remove('open');
@@ -295,7 +295,7 @@
       window.open('https://fromis9.fanpla.jp/live_information/schedule/list/?lang=ko', '_blank', 'noopener');
     document.getElementById('spotifyButton').onclick = () => { window.location.href = 'spotify://'; };
     document.getElementById('searchButton').onclick = () => {
-      const term = prompt('Spotify?먯꽌 李얠쓣 怨≪씠???꾪떚?ㅽ듃:');
+      const term = prompt('Spotify에서 찾을 곡이나 아티스트:');
       if (term && term.trim()) window.location.href = 'spotify:search:' + encodeURIComponent(term.trim());
     };
     window.addEventListener('beforeinstallprompt', event => {
@@ -304,7 +304,7 @@
     });
     document.getElementById('installButton').onclick = async () => {
       if (deferredInstall) { deferredInstall.prompt(); deferredInstall = null; }
-      else alert('Safari/Chrome 硫붾돱?먯꽌 ?쒗솃 ?붾㈃??異붽??앸? ?좏깮??二쇱꽭??');
+      else alert('Safari/Chrome 메뉴에서 “홈 화면에 추가”를 선택해 주세요.');
     };
     let lastWalk = 0;
     function animate(now) {

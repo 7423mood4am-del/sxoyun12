@@ -1,7 +1,7 @@
-﻿{
-  "name": "?꾨뱶 ??,
-  "short_name": "?꾨뱶 ??,
-  "description": "洹?ъ슫 ?꾨뱶 ??紐⑤컮??companion",
+{
+  "name": "후드 펫",
+  "short_name": "후드 펫",
+  "description": "귀여운 후드 펫 모바일 companion",
   "lang": "ko-KR",
   "start_url": "./",
   "scope": "./",

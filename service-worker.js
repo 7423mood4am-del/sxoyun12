@@ -1,4 +1,4 @@
-﻿const CACHE_NAME = 'hood-pet-mobile-v1';
+const CACHE_NAME = 'hood-pet-mobile-v1';
 const APP_FILES = [
   './', './index.html', './manifest.webmanifest',
   './icon-192.png', './icon-512.png', './Gaegu-Regular.ttf',
